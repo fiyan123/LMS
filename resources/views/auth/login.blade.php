@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- <div class="container">
+<br><br>
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -69,10 +70,10 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div> 
 
-{{-- 
-<body class="login-page">
+
+{{-- <body class="login-page">
 	<div class="login-header box-shadow">
 		<div class="container-fluid d-flex justify-content-between align-items-center">
 			<div class="brand-logo">
@@ -97,7 +98,7 @@
 
 
 
-<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+{{-- <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 col-lg-7">
@@ -110,7 +111,7 @@
                     </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-                        {{-- <div class="select-role">
+                        <div class="select-role">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <label class="btn active">
                                     <input type="radio" name="options" id="admin">
@@ -125,7 +126,7 @@
                                     Employee
                                 </label>
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="input-group custom">
                             <input id="email" type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
@@ -159,9 +160,9 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                    {{-- <a class="forgot-password" href="{{ route('password.request') }}">
+                                    <a class="forgot-password" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
-                                    </a> --}}
+                                    </a>
                                 <div class="forgot-password">
                                 @if (Route::has('password.request'))
                                     <a href="{{ route('password.request') }}">Forgot Password</a>
@@ -178,10 +179,10 @@
                                     -->
                                     <button class="btn btn-primary btn-lg btn-block"  type="submit">Sign In</button>
                                 </div>
-                                {{-- <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div> --}}
-                                {{-- <div class="input-group mb-0">
+                                <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div>
+                                <div class="input-group mb-0">
                                     <a class="btn btn-outline-primary btn-lg btn-block" href="register.html">Register To Create Account</a>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -189,5 +190,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection
