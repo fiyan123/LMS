@@ -44,8 +44,14 @@ class User extends Authenticatable
     ];
 
 
-    public function role(){
-        return $this->belongsTo(Role::class);
-
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
+
+    public function pelajaran()
+    {
+        return $this->belongsTo(Pelajaran::class);
+    }
+    
 }

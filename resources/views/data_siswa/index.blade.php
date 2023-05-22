@@ -2,7 +2,6 @@
 @section('content')
 
 
-
 	<div class="main-container">
 		<div class="pd-ltr-20 xs-pd-20-10">
 			<div class="min-height-200px">
@@ -10,7 +9,7 @@
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
 							<div class="title">
-								<h4>DataTable</h4>
+								<h4>Data siswa</h4>
 							</div>
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
@@ -18,6 +17,9 @@
 									<li class="breadcrumb-item active" aria-current="page">DataTable</li>
 								</ol>
 							</nav>
+						</div>
+						<div class="col-md-6 col-sm-12 text-right">
+							<a class="btn btn-primary" href="{{route('data_siswa.create')}}" role="button" >Tambah Data</a>
 						</div>
 						<div class="col-md-6 col-sm-12 text-right">
 								{{-- <a class="btn btn-primary" href="{{route('data_siswa.create')}}" role="button" >Tambah Data</a> --}}
@@ -48,15 +50,12 @@
                                 @foreach ($data_siswas as $data)
 								<tr>
                                     <td>{{$no++}}</td>
-									<td>{{$data->name}}</td>
-									<td>{{$data->pelajaran}}</td>
-									<td>{{$data->kelas_id}}</td>
-									<td>{{$data->nomor_telpon}}</td>
-									<td>{{$data->email}}</td>
+									<td>{{$data->name ?? 'tidak ada data'}}</td>
+									<td>{{$data->pelajaran->nama_pelajaran ?? 'tidak ada data'}}</td>
+									<td>{{$data->kelas->angkatan ?? '-'}} {{ $data->kelas->jurusan->nama ?? '-' }} {{ $data->kelas->nama_kelas ?? '-' }}</td>
+									<td>{{$data->nomor_telpon ?? 'tidak ada data'}}</td>
+									<td>{{$data->email ?? 'tidak ada data'}}</td>
                                     <td>
-                                        <form action="{{ route('data_siswa.destroy', $data->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
                                             <a href="{{ route('data_siswa.edit', $data->id) }}"
                                                 class="btn btn-sm btn-outline-success">
                                                 Edit
@@ -65,10 +64,9 @@
                                                 class="btn btn-sm btn-outline-warning">
                                                 Show
                                             </a> |
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                onclick="return confirm('Apakah Anda Yakin?')">Delete
+											<input type="text" hidden id="data_id" value="{{ $data->id }}">
+                                            <button type="submit" class="hapus btn btn-sm btn-outline-danger">Delete
                                             </button>
-                                        </form>
                                     </td>
 								</tr>
                                 @endforeach
@@ -83,5 +81,62 @@
 			</div>
 		</div>
 	</div>
-    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+		$(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+		// hapus
+		$(document).on('click', '.hapus', function () {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data akan dihapus dari daftar!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+					var data_id = $('#data_id').val();
+					var url = "{{ route('data_siswa.destroy', ':data_id') }}";
+					url = url.replace(':data_id', data_id);
+                    $.ajax({
+                        url : url,
+                        type: 'delete',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res, status){
+                            if (status = '200'){
+                                setTimeout(() => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Data Berhasil Dihapus',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then((res) => {
+										location.reload(); // Refresh halaman
+									});
+                                });
+                            }
+                        },
+                        error: function(xhr){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Gagal Menghapus',
+                            });
+                        }
+                    });
+                }
+            });
+        });   
+		
+	
+	</script>
 @endsection
