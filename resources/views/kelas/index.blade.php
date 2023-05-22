@@ -46,25 +46,21 @@
                                 @foreach ($kelass as $data)
 								<tr>
                                     <td>{{$no++}}</td>
-									<td>{{$data->angkatan}}</td>
-									<td>{{$data->jurusan->nama}}</td>
-									<td>{{$data->nama_kelas}}</td>
+									<td>{{$data->angkatan ?? 'tidak ada data'}}</td>
+									<td>{{$data->jurusan->nama ?? 'tidak ada data'}}</td>
+									<td>{{$data->nama_kelas ?? 'tidak ada data'}}</td>
                                     <td>
-                                        <form action="{{ route('kelas.destroy', $data->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <a href="{{ route('kelas.edit', $data->id) }}"
-                                                class="btn btn-sm btn-outline-success">
-                                                Edit
-                                            </a> |
-                                            <a href="{{ route('kelas.show', $data->id) }}"
-                                                class="btn btn-sm btn-outline-warning">
-                                                Show
-                                            </a> |
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                onclick="return confirm('Apakah Anda Yakin?')">Delete
-                                            </button>
-                                        </form>
+										<a href="{{ route('kelas.edit', $data->id) }}"
+											class="btn btn-sm btn-outline-success">
+											Edit
+										</a> |
+										<a href="{{ route('kelas.show', $data->id) }}"
+											class="btn btn-sm btn-outline-warning">
+											Show
+										</a> |
+										<input type="text" value="{{ $data->id }}" id="data_id" hidden>
+										<button class="hapus btn btn-sm btn-outline-danger">Delete
+										</button>
                                     </td>
 								</tr>
                                 @endforeach
@@ -79,5 +75,60 @@
 			</div>
 		</div>
 	</div>
-    
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script>
+		$(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+		// hapus
+		$(document).on('click', '.hapus', function () {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data akan dihapus dari daftar!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+					var data_id = $('#data_id').val();
+					var url = "{{ route('kelas.destroy', ':data_id') }}";
+					url = url.replace(':data_id', data_id);
+                    $.ajax({
+                        url : url,
+                        type: 'delete',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res, status){
+                            if (status = '200'){
+                                setTimeout(() => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Data Berhasil Dihapus',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then((res) => {
+										location.reload(); // Refresh halaman
+									});
+                                });
+                            }
+                        },
+                        error: function(xhr){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Gagal Menghapus',
+                            });
+                        }
+                    });
+                }
+            });
+        });   	
+		</script>
 @endsection

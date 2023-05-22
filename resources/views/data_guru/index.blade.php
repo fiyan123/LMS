@@ -20,6 +20,9 @@
 							</nav>
 						</div>
 						<div class="col-md-6 col-sm-12 text-right">
+							<a class="btn btn-primary" href="{{route('data_guru.create')}}" role="button" >Tambah Data</a>
+						</div>
+						<div class="col-md-6 col-sm-12 text-right">
 								{{-- <a class="btn btn-primary" href="{{route('data_guru.create')}}" role="button" >Tambah Data</a> --}}
 						</div>
 					</div>

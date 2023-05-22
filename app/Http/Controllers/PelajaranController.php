@@ -94,6 +94,8 @@ class PelajaranController extends Controller
     {
         $pelajarans = Pelajaran::findOrFail($id);
         $pelajarans->delete();
-        return redirect()->route('pelajaran.index')->with('success','Data Berhasil Di Update');
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus']);
     }
 }

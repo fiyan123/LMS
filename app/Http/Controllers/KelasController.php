@@ -109,6 +109,8 @@ class KelasController extends Controller
     {
         $kelass = Kelas::findOrFail($id);
         $kelass->delete();
-        return redirect()->route('kelas.index')->with('success','Data Berhasil Di Hapus');
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus']);
     }
 }
