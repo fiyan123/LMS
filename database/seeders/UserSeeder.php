@@ -42,6 +42,66 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'role_id' => 3
         ]);
+        User::create([
+            'name' => 'Siswa1',
+            'email' => 'siswa1@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa2',
+            'email' => 'siswa2@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa3',
+            'email' => 'siswa3@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa4',
+            'email' => 'siswa4@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa5',
+            'email' => 'siswa5@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa6',
+            'email' => 'siswa6@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa7',
+            'email' => 'siswa7@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa8',
+            'email' => 'siswa8@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa9',
+            'email' => 'siswa9@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
+        User::create([
+            'name' => 'Siswa10',
+            'email' => 'siswa10@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => 3
+        ]);
         
 
     }
