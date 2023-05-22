@@ -16,15 +16,20 @@ return new class extends Migration
         Schema::create('upload_tugas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('file_id');
-            $table->date('tanggal_upload');
-            $table->date('tanggal_selesai');
+            $table->unsignedBigInteger('angkatan_id');
+            $table->unsignedBigInteger('jurusan_id');
+            $table->unsignedBigInteger('kelas_id');
+            $table->string('dokumen_file');
+            $table->dateTime('tanggal_upload');
+            $table->dateTime('tanggal_selesai');
             $table->text('keterangan');
             $table->enum('status', ['Selesai','Tidak Selesai'])->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade');
+            $table->foreign('angkatan_id')->references('id')->on('angkatans')->onDelete('cascade');
+            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
         });
     }
 

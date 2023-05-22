@@ -8,6 +8,7 @@ use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\KelasSeeder;
 use Database\Seeders\JurusanSeeder;
+use Database\Seeders\AngkatanSeeder;
 use Database\Seeders\PelajaranSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(KelasSeeder::class);
         $this->call(JurusanSeeder::class);
         $this->call(PelajaranSeeder::class);
+        $this->call(AngkatanSeeder::class);
     }
 }

@@ -39,6 +39,9 @@
                                 <th>Tanggal Selesai</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
+                                <th>Angkatan</th>
+                                <th>Jurusan</th>
+                                <th>Kelas</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -49,6 +52,9 @@
                                 <td>{{ $data->tanggal_upload }}</td>
                                 <td>{{ $data->tanggal_selesai }}</td>
                                 <td>{{ $data->keterangan }}</td>
+                                <td>{{ $data->angkatan_id }}</td>
+                                <td>{{ $data->jurusan_id }}</td>
+                                <td>{{ $data->kelas_id }}</td>
                                 <td>{{ $data->status }}</td>
                                 <td>
                                     <form action="{{ route('upload_tugas.destroy', $data->id) }}" method="POST">

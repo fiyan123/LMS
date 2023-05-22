@@ -17,98 +17,107 @@
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
         <div class="min-height-200px">
-            <!-- Default Basic Forms Start -->
-            <div class="pd-20 card-box mb-30">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <h4 class="text-blue h4">Form Upload Tugas</h4>
-                        <p class="mb-30">Masukkan data form upload tugas</p>
-                    </div>
-                </div>            
-                    
-                <form action="{{ route('upload_tugas.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-        
-                    <div class="form-group mb-3">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">File Tugas<span class="required">*</span></label>
-                        <div class="input-group control-group increment  col-md-6 col-sm-6 col-xs-12">
-                            <input type="file" name="dokumen_file[]" class="form-control col-md-7 col-xs-12">
-                            <div class="input-group-btn"> 
-                                <a class="btn btn-success" id="add"><i class="glyphicon glyphicon-plus"></i>Add</a>
+				<div class="pd-20 card-box mb-30">
+					<div class="wizard-content">
+                        <form class="tab-wizard wizard-circle wizard" action="{{route('upload_tugas.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+							<section>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" style="font-size: 19px" for="first-name">File Tugas</label>
+                                            <div class="input-group control-group increment ">
+                                                <input type="file" name="dokumen_file[]" class="form-control">
+                                                <div class="input-group-btn"> 
+                                                <a class="btn btn-success" id="add"><i class="glyphicon glyphicon-plus"></i>Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="clone hide" >
-                            <div class="control-group input-group col-md-6 col-sm-6 col-xs-12"  style="margin-top:10px;">
-                                <input type="file" name="dokumen_file[]" class="form-control col-md-7 col-xs-12">
-                                <div class="input-group-btn"> 
-                                <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="clone hide">
+                                        <div class="control-group input-group"  style="margin-top:2px;">
+                                            <input type="file" name="dokumen_file[]" class="form-control">
+                                            <div class="input-group-btn"> 
+                                            <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label>Tanggal Upload</label>
-                        <input type="date" class="form-control @error('tanggal_upload') is-invalid @enderror" name="tanggal_upload" placeholder="tentukan tanggal" value="{{ old('tanggal_upload') }}">
-
-                        @error('tanggal_upload')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label>Tanggal Selesai</label>
-                        <input type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror" name="tanggal_selesai" placeholder="tentukan tanggal" value="{{ old('tanggal_selesai') }}">
-
-                        @error('tanggal_selesai')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label>Keterangan Tugas</label>
-                        <textarea class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" placeholder="masukkan keterangan" value="{{ old('keterangan') }}"></textarea>
-
-                        @error('keterangan')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    
-                    <label class="form-group">Status</label>
-                    <div class="form-group">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input @error('status') is-invalid @enderror" type="radio" name="status" id="inlineRadio1" value="Selesai">
-                            <label class="form-check-label">Selesai</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label" style="font-size: 19px" for="first-name">Angkatan</label>
+                                    <select name="angkatan_id" class="form-control" id="angkatan_id">
+                                        @foreach ($angkatans as $data)
+                                            <option value="{{$data->id}}">{{$data->angkatan}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input @error('status') is-invalid @enderror" type="radio" name="status" id="inlineRadio2" value="Tidak Selesai">
-                            <label class="form-check-label">Tidak Selesai</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label" style="font-size: 19px" for="first-name">Jurasan</label>
+                                    <select name="jurusan_id" class="form-control" id="jurusan_id">
+                                        @foreach ($jurusans as $data)
+                                        <option value="{{$data->id}}">{{$data->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        @error('status')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <center>
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('upload_tugas.index') }}" class="btn btn-secondary">Kembali</a>
-                        </div>
-                    </center>
-                </form>
-            </div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+                                            <label class="control-label" style="font-size: 19px" for="first-name">Kelas</label>
+                                            <select name="kelas_id" class="form-control" id="kelas_id">
+                                                @foreach ($kelass as $data)
+                                                    <option value="{{$data->id}}">{{$data->nama_kelas}}</option>
+                                                @endforeach
+                                            </select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+                                            <label class="control-label" style="font-size: 19px" for="first-name">Keterangan</label>
+                                            <textarea name="keterangan" class="form-control" placeholder="Keterangan Tugas"  cols="30" rows="4"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+                                            <label class="control-label" style="font-size: 19px" for="first-name">Tanggal Upload</label>
+                                            <input type="datetime-local" name="tanggal_upload" id="" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+                                            <label class="control-label" style="font-size: 19px" for="first-name">Tanggal Berakhir</label>
+                                            <input type="datetime-local" name="tanggal_selesai" id="" class="form-control">
+										</div>
+									</div>
+								</div>
+							</section>
+                            <button class="btn btn-primary" style="margin-top: 2px" type="submit">Submit</button>
+						</form>
+					</div>
+				</div>
         </div>
     </div>
 </div>
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">

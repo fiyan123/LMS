@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Files;
+use App\Models\Kelas;
+use App\Models\Jurusan;
+use App\Models\Angkatan;
 use App\Models\UploadTugas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UploadTugasController extends Controller
 {
@@ -20,7 +24,11 @@ class UploadTugasController extends Controller
 
     public function create()
     {
-        return view('upload_tugas_guru.create');
+        $kelass = Kelas::all();
+        $jurusans = Jurusan::all();
+        $angkatans = Angkatan::all();
+
+        return view('upload_tugas_guru.create',compact('jurusans','kelass','angkatans'));
     }
 
     public function store(Request $request)
@@ -29,51 +37,90 @@ class UploadTugasController extends Controller
             'tanggal_upload'  => 'required',
             'tanggal_selesai' => 'required',
             'keterangan'      => 'required',
-            // 'file_id'         => 'required',
+            'jurusan_id'      => 'required',
+            'kelas_id'        => 'required',
+            'angkatan_id'     => 'required',
+            'dokumen_file'     => 'required',
         ]);
         
-        $uploadTugas = new UploadTugas();
+        // if ($request->hasFile('dokumen_file')) {
+        //     foreach ($request->file('dokumen_file') as $dokumen_files) {
+        //         $name = $dokumen_files->getClientOriginalName();
+        //         $dokumen_files->move(public_path().$name);
+        //         $data = $name;
+        //     }
+        // }
+        // $files = $request->file('files');
 
-        $uploadTugas->user_id         = Auth::user()->id;
-        $uploadTugas->file_id;
-        $uploadTugas->tanggal_upload  = $request->tanggal_upload;
-        $uploadTugas->tanggal_selesai = $request->tanggal_selesai;
-        $uploadTugas->keterangan      = $request->keterangan;
-        $uploadTugas->status          = $request->status;
-        $uploadTugas->save();
-                
+        // if ($request->hasFile('files')) {
+        //     foreach ($files as $file) {
+        //         $fileName = $file->getClientOriginalName();
+        //         $file->storeAs('path/to/save', $fileName); // Menggunakan file system Laravel untuk menyimpan file
+        //     }
+        
+        // $files = new Files();
+        // $files->user_id = Auth::user()->id;
+        
+        // $files->save();
+        
+        
+        $uploadTugas = new UploadTugas();
         if ($request->hasFile('dokumen_file')) {
-            foreach ($request->file('dokumen_file') as $dokumen_file) {
-                $name = $dokumen_file->getClientOriginalName();
-                $dokumen_file->move(public_path().'/file/'.$name);
-                $fileNames = $name;
+            $files = $request->file('dokumen_file');
+            foreach ($files as $file) {
+                $fileName = $file->getClientOriginalName();
+                $file->storeAs('path/to/save', $fileName);// Menggunakan file system Laravel untuk menyimpan file
+                $data[] = $fileName;
             }
         }
-        // dd($uploadTugas);
-        
-        $files = new Files();
+        $uploadTugas->user_id         = Auth::user()->id;
+        $uploadTugas->dokumen_file = json_encode($data);
+        $uploadTugas->angkatan_id     = $request->angkatan_id;
+        $uploadTugas->kelas_id        = $request->kelas_id;
+        $uploadTugas->jurusan_id      = $request->jurusan_id;
+        $uploadTugas->tanggal_upload = $request->tanggal_upload;
+        $uploadTugas->tanggal_selesai = $request->tanggal_selesai;
+        $uploadTugas->keterangan      = $request->keterangan;
+        $uploadTugas->status          = "Selesai";
+        $uploadTugas->save();
+                
 
-        $files->user_id = Auth::user()->id;
-        $files->dokumen_file = json_encode($fileNames);
-        $files->save();
         
         return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil ditambah!');
 
     }
+    
+//     public function dokumen_file()
+// {
+//     if ($this->dokumen_file->storeAs('path/to/save', $this->dokumen_file->getClientOriginalName())) {
+//         return Storage::path('path/to/save/' . $this->dokumen_file->getClientOriginalName());
+//     } else {
+//         return null;
+//     }
+// }
+
+//     public function deletedokumen_file()
+//     {
+//         if ($this->$dokumen_file->storeAs('path/to/save', $this->dokumen_file)) {
+//             return unlink(storeAs('path/to/save', $this->dokumen_file));
+//         }
+//     }
 
     public function show($id)
     {        
-        // $data = Files::join('upload_tugas', 'files.upload_tugas_id', '=', 'upload_tugas.id')
-        //     ->select('files.*', 'upload_tugas.id as file_upload')
-        //     ->where('files.id', $id)
-        //     ->first();
-    
-        // if ($data) {
-        //     $uploadTugas = UploadTugas::where('id', $data->file_upload)->get();
-        // }
-        // dd($files);
+        $uploadTugas = UploadTugas::findOrFail($id);
+        // $fileUrl = $this->dokumen_file();
+        // $uploadTugas = DB::table('upload_tugas')
+        //                     ->join('users', 'users.id', '=', 'transaksis.id_user')
+        //                     ->select('transaksis.id','transaksis.tanggal_transaksi','users.name', 'pembelis.no_hp','pembelis.alamat','cities.*','provinces.*')
+        //                     ->where('transaksis.id','=',$id)->first();
+        //                     // $id = $transaksis->id;
+
+        //                     // dd($transaksis);
+        // $files = Files::all();
+
         
-        return view('upload_tugas_guru.show', compact('data'));
+        return view('upload_tugas_guru.show', compact('uploadTugas'));
     }
 
     public function edit($id)

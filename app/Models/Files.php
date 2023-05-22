@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\UploadTugas;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Files extends Model
 {
     use HasFactory;
 
-    protected $table   = 'files';
-    public $guarded = [''];
+    // protected $table   = 'files';
+    public $guarded = ['id'];
     public $timestamps = true;
 
     public function UploadTugas()
