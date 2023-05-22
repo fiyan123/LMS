@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Files;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class UploadTugas extends Model
 {
@@ -17,6 +18,11 @@ class UploadTugas extends Model
     public function files()
     {
         return $this->belongsTo(Files::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
     }
 
     

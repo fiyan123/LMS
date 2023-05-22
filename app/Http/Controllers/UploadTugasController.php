@@ -8,7 +8,6 @@ use App\Models\Jurusan;
 use App\Models\Angkatan;
 use App\Models\UploadTugas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +16,10 @@ class UploadTugasController extends Controller
    
     public function index()
     {
-        $uploadTugas = UploadTugas::all();
+        $uploadTugas = UploadTugas::join('jurusans','upload_tugas.jurusan_id', '=', 'jurusans.id')
+                    ->join('angkatans', 'upload_tugas.angkatan_id', '=', 'angkatans.id')
+                    ->select('upload_tugas.*', 'jurusans.nama as nama_jurusan', 'angkatans.angkatan as tahun_angkatan')
+                    ->get();
 
         return view('upload_tugas_guru.index', compact('uploadTugas'));
     }
@@ -65,6 +67,7 @@ class UploadTugasController extends Controller
         
         
         $uploadTugas = new UploadTugas();
+
         if ($request->hasFile('dokumen_file')) {
             $files = $request->file('dokumen_file');
             foreach ($files as $file) {
@@ -73,8 +76,9 @@ class UploadTugasController extends Controller
                 $data[] = $fileName;
             }
         }
+
         $uploadTugas->user_id         = Auth::user()->id;
-        $uploadTugas->dokumen_file = json_encode($data);
+        $uploadTugas->dokumen_file    = json_encode($data);
         $uploadTugas->angkatan_id     = $request->angkatan_id;
         $uploadTugas->kelas_id        = $request->kelas_id;
         $uploadTugas->jurusan_id      = $request->jurusan_id;
@@ -84,8 +88,6 @@ class UploadTugasController extends Controller
         $uploadTugas->status          = "Selesai";
         $uploadTugas->save();
                 
-
-        
         return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil ditambah!');
 
     }
@@ -108,31 +110,62 @@ class UploadTugasController extends Controller
 
     public function show($id)
     {        
-        $uploadTugas = UploadTugas::findOrFail($id);
-        // $fileUrl = $this->dokumen_file();
-        // $uploadTugas = DB::table('upload_tugas')
-        //                     ->join('users', 'users.id', '=', 'transaksis.id_user')
-        //                     ->select('transaksis.id','transaksis.tanggal_transaksi','users.name', 'pembelis.no_hp','pembelis.alamat','cities.*','provinces.*')
-        //                     ->where('transaksis.id','=',$id)->first();
-        //                     // $id = $transaksis->id;
+        $data = UploadTugas::join('jurusans', 'upload_tugas.jurusan_id', '=', 'jurusans.id')
+            ->join('angkatans', 'upload_tugas.angkatan_id', '=', 'angkatans.id')
+            ->select('upload_tugas.*', 'jurusans.nama as nama_jurusan', 'angkatans.angkatan as tahun_angkatan')
+            ->findOrFail($id);
 
-        //                     // dd($transaksis);
-        // $files = Files::all();
-
-        
-        return view('upload_tugas_guru.show', compact('uploadTugas'));
+        return view('upload_tugas_guru.show', compact('data'));
     }
 
     public function edit($id)
     {
-        $data = UploadTugas::findOrFail($id);
+        $data      = UploadTugas::findOrFail($id);
+        $kelass    = Kelas::all();
+        $jurusans  = Jurusan::all();
+        $angkatans = Angkatan::all();
 
-        return view('upload_tugas_guru.edit', compact('data'));
+        return view('upload_tugas_guru.edit', compact('data','kelass','jurusans','angkatans'));
     }
 
-    public function update(Request $request, UploadTugas $uploadTugas)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'tanggal_upload'  => 'required',
+            'tanggal_selesai' => 'required',
+            'keterangan'      => 'required',
+            'jurusan_id'      => 'required',
+            'kelas_id'        => 'required',
+            'angkatan_id'     => 'required',
+        ]);
+        
+        $uploadTugas = UploadTugas::findOrFail($id);
+           
+        if ($request->hasFile('dokumen_file')) {
+            $files = $request->file('dokumen_file');
+            foreach ($files as $file) {
+                $fileName = $file->getClientOriginalName();
+                $file->storeAs('path/to/save', $fileName);// Menggunakan file system Laravel untuk menyimpan file
+                $data[] = $fileName;
+            }
+        }
+
+        if (!empty($data)) {
+            $uploadTugas->dokumen_file = json_encode($data);
+        } else {
+            $uploadTugas->dokumen_file = $request->dokumen_file;
+        }
+        $uploadTugas->user_id         = Auth::user()->id;   
+        $uploadTugas->angkatan_id     = $request->angkatan_id;
+        $uploadTugas->kelas_id        = $request->kelas_id;
+        $uploadTugas->jurusan_id      = $request->jurusan_id;
+        $uploadTugas->tanggal_upload  = $request->tanggal_upload;
+        $uploadTugas->tanggal_selesai = $request->tanggal_selesai;
+        $uploadTugas->keterangan      = $request->keterangan;
+        $uploadTugas->save();
+
+        return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil diedit!');
+                
     }
 
     public function destroy($id)

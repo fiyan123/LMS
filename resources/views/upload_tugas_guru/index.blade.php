@@ -52,10 +52,10 @@
                                 <td>{{ $data->tanggal_upload }}</td>
                                 <td>{{ $data->tanggal_selesai }}</td>
                                 <td>{{ $data->keterangan }}</td>
-                                <td>{{ $data->angkatan_id }}</td>
-                                <td>{{ $data->jurusan_id }}</td>
+                                <td><span class="badge badge-primary">{{ $data->status }}</span></td>
+                                <td>{{ $data->tahun_angkatan }}</td>
+                                <td>{{ $data->nama_jurusan }}</td>
                                 <td>{{ $data->kelas_id }}</td>
-                                <td>{{ $data->status }}</td>
                                 <td>
                                     <form action="{{ route('upload_tugas.destroy', $data->id) }}" method="POST">
                                         @csrf
