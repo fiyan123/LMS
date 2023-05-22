@@ -78,7 +78,7 @@
 										</option>
 									@endforeach
 								</select>
-								@error('id_kelas')
+								@error('jurusan_id')
 									<span class="invalid-feedback" role="alert">
 										<strong>{{ $message }}</strong>
 									</span>
@@ -97,7 +97,7 @@
 										</option>
 									@endforeach
 								</select>
-								@error('id_kelas')
+								@error('kelas_id')
 									<span class="invalid-feedback" role="alert">
 										<strong>{{ $message }}</strong>
 									</span>
