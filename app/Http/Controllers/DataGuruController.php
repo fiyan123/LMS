@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
+use App\Models\Pelajaran;
 
 class DataGuruController extends Controller
 {
@@ -15,7 +17,7 @@ class DataGuruController extends Controller
      */
     public function index()
     {
-        $data_gurus = User::where('role_id',2)->latest()->get();
+        $data_gurus = User::with('kelas.jurusan')->where('role_id', 2)->latest()->get();
         return view('data_guru.index',compact('data_gurus'));
     }
 
@@ -26,7 +28,9 @@ class DataGuruController extends Controller
      */
     public function create()
     {
-        //
+        $pelajarans = Pelajaran::all();
+        $kelas = Kelas::all();
+        return view('data_guru.create', compact('pelajarans','kelas'));
     }
 
     /**
@@ -37,51 +41,84 @@ class DataGuruController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'pelajaran_id' => 'required',
+            'kelas_id' => 'required',
+            'nomor_telpon' => 'required|unique:users',
+            'email' => 'required|unique:users',
+            'password' => 'required|unique:users',
+        ]);
+        $data = new User();
+        $data->name = $request->name;
+        $data->pelajaran_id = $request->pelajaran_id;
+        $data->kelas_id = $request->kelas_id;
+        $data->nomor_telpon = $request->nomor_telpon;
+        $data->email = $request->email;
+        $data->password = $request->password;
+        $data->role_id = 2;
+        $data->save();
+        return redirect()->route('data_guru.index')->with('success','Data berhasil di buat!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $pelajarans = Pelajaran::all();
+        $kelas = Kelas::all();
+        $data = User::findOrFail($id);
+        return view('data_guru.show', compact('data','pelajarans','kelas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $pelajarans = Pelajaran::all();
+        $kelas = Kelas::all();
+        $data = User::findOrFail($id);
+        return view('data_guru.edit', compact('data','pelajarans','kelas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $data = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required',
+            'pelajaran_id' => 'required',
+            'kelas_id' => 'required',
+            
+            
+        ]);
+        if($data->nomor_telpon != $request->nomor_telpon ){
+            $request->validate([
+                'nomor_telpon' => 'required|unique:users',
+            ]);
+        }
+        if($data->email != $request->email ){
+            $request->validate([
+                'email' => 'required|unique:users',
+            ]);
+        }
+        if($data->password != $request->password ){
+            $request->validate([
+                'password' => 'required|unique:users|string|min:5',
+            ]);
+        }
+        $data->name = $request->name;
+        $data->pelajaran_id = $request->pelajaran_id;
+        $data->kelas_id = $request->kelas_id;
+        $data->nomor_telpon = $request->nomor_telpon;
+        $data->email = $request->email;
+        $data->password = $request->password;
+        $data->role_id = 2;
+        $data->update();
+        return redirect()->route('data_guru.index')->with('success','Data berhasil di edit!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $data = User::findOrFail($id);
+        $data->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus']);
     }
 }

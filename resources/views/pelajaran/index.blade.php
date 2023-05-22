@@ -44,7 +44,7 @@
                                 @foreach ($pelajarans as $data)
 								<tr>
                                     <td>{{$no++}}</td>
-									<td>{{$data->nama_pelajaran}}</td>
+									<td>{{$data->nama_pelajaran ?? 'tidak ada data'}}</td>
                                     <td>
                                             <a href="{{ route('pelajaran.edit', $data->id) }}"
                                                 class="btn btn-sm btn-outline-success">

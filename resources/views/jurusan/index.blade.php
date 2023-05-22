@@ -45,7 +45,7 @@
 								<input id="data_id" type="text" value="{{ $data->id }}" hidden >
 								<tr>
                                     <td>{{$no++}}</td>
-									<td>{{$data->nama}}</td>
+									<td>{{$data->nama ?? 'tidak ada data'}}</td>
                                     <td>
 										<a href="{{ route('jurusan.edit', $data->id) }}"
 											class="btn btn-sm btn-outline-success">
