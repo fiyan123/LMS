@@ -47,7 +47,6 @@ Route::prefix('guru')->middleware(['auth', 'Guru'])->group(function () {
                 return view('guru.dashboard');
             }); 
         Route::resource('upload_tugas', UploadTugasController::class);
-        Route::any('destroy', [UploadTugasController::class, 'destroy'])->name('delete');
 });
 
 // Route::group(['prefix' => 'upload-tugas', 'as' => 'upload_tugas.'], function () {

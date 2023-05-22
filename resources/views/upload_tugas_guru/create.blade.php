@@ -110,7 +110,10 @@
 									</div>
 								</div>
 							</section>
-                            <button class="btn btn-primary" style="margin-top: 2px" type="submit">Submit</button>
+                            <center><br>
+                                <button class="btn btn-primary" type="submit">Simpan</button>
+                                <a href="{{ route('upload_tugas.index') }}" class="btn btn-danger">Kembali</a>
+                            </center>
 						</form>
 					</div>
 				</div>

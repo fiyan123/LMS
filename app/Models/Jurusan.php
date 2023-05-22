@@ -10,12 +10,17 @@ class Jurusan extends Model
 {
     use HasFactory;
     
-    public $fillable = ['id','nama'];
+    public $fillable = [''];
     public $timestamps = true;
 
 
     public function kelas()
     {
         return $this->hasMany(Kelas::class);
+    }
+
+    public function uploadTugas()
+    {
+        return $this->belongsTo(UploadTugas::class);
     }
 }

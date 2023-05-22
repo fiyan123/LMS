@@ -1,6 +1,7 @@
 @extends('layouts.guru')
 @section('content')
 
+<br><br>
 <div class="mt-5">
 	<div class="container">
 		<div class="row justify-content-center">
@@ -15,7 +16,7 @@
 							</div>
 						@endif
 	
-						{{ __('You are logged in!') }}
+						<p>Selamat Datang, {{ Auth::user()->name }}</p>
 					</div>
 				</div>
 			</div>
