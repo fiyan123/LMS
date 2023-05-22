@@ -40,8 +40,7 @@ class JurusanController extends Controller
     //     'nama' => 'required'
     // ]);
     $request->validate([
-        'nama' => 'item title',
-        'price' => 10
+        'nama' => 'required',
     ]);
         $jurusans = new Jurusan();
         $jurusans->nama = $request->nama;
@@ -102,6 +101,8 @@ class JurusanController extends Controller
     {
         $jurusans = Jurusan::findOrFail($id);
         $jurusans->delete();
-        return redirect()->route('jurusan.index')->with('success','Data Berhasil di Hapus');
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus']);
     }
 }
