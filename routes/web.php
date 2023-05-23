@@ -9,7 +9,9 @@ use App\Http\Controllers\TugasController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\DataGuruController;
 use App\Http\Controllers\DataSiswaController;
+use App\Http\Controllers\forumSiswaController;
 use App\Http\Controllers\PelajaranController;
+use App\Http\Controllers\SiswaKelasController;
 use App\Http\Controllers\UploadTugasController;
 
 /*
@@ -43,38 +45,24 @@ Route::prefix('admin')->middleware(['auth', 'Admin'])->group(function () {
 
 });
 Route::prefix('guru')->middleware(['auth', 'Guru'])->group(function () {
-        Route::get('dashboard', function () {
-                return view('guru.dashboard');
-            }); 
-        Route::resource('upload_tugas', UploadTugasController::class);
+    Route::get('dashboard', function () {
+            return view('guru.dashboard');
+        }); 
+    Route::resource('upload_tugas', UploadTugasController::class);
 });
 
-// Route::group(['prefix' => 'upload-tugas', 'as' => 'upload_tugas.'], function () {
-//     Route::get('/', 'UploadTugasController@index')->name('index');
-//     Route::get('/show/{id}', 'UploadTugasController@show')->name('show');
-//     Route::any('/create', 'UploadTugasController@create')->name('create');
-//     Route::any('/store', 'UploadTugasController@store')->name('store');
-//     Route::get('/edit/{id}', [UploadTugasController::class, 'edit'])->name('edit');
-//     Route::any('/update/{id}', 'UploadTugasController@update')->name('update');
-//     Route::any('destroy', 'UploadTugasController@destroy')->name('delete');
-//     Route::delete('hapusData/{id}', 'UploadTugasController@hapusData')->name('hapusData');
-//     Route::get('/download-kkpr/{file}', 'UploadTugasController@downloadKKPR')->name('download-dokumen-kkpr');
-//     Route::get('/download-imb/{file}', 'UploadTugasController@downloadIMB')->name('download-dokumen-imb');
-//     Route::get('/download-surat-adat/{file}', 'UploadTugasController@downloadSuratAdat')->name('download-surat-adat');
-// });
-
 Route::prefix('siswa')->middleware(['auth', 'Siswa'])->group(function () {
-        Route::get('/dashboard', function () {
-                return view('siswa.dashboard');
-            });  
-        Route::get('/tugas/detail_tugas', function () {
-                return view('siswa.tugas.detail_tugas');
-            });  
-            Route::resource('tugas', TugasController::class);
-            // Route::get('detail_tugas', TugasController::class,'indo')->name('detail_tugas.indo');
-            // Route::get('/detail_tugas', 'TugasController@indo');
+    Route::get('/dashboard', function () {
+            return view('siswa.dashboard');
+        });  
+    Route::get('/tugas/detail_tugas', function () {
+            return view('siswa.tugas.detail_tugas');
+        });  
+    Route::get('/siswa-kelas', [SiswaKelasController::class,'index'])->name('index');
+    Route::get('/siswa-forum', [forumSiswaController::class,'index'])->name('index');
+    Route::resource('tugas', TugasController::class);
 
-        });
+});
         
         
 //         Route::prefix('admin')->middleware(['auth', 'Admin'])->group(function () {
