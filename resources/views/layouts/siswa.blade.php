@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
@@ -14,14 +15,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+		rel="stylesheet">
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/core.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/icon-font.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
+	<link rel="stylesheet" type="text/css"
+		href="{{asset('assets/src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
+	<link rel="stylesheet" type="text/css"
+		href="{{asset('assets/src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/style.css')}}">
- 
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 	<script>
@@ -32,6 +36,7 @@
 		gtag('config', 'UA-119386393-1');
 	</script>
 </head>
+
 <body>
 	{{-- <div class="pre-loader">
 		<div class="pre-loader-box">
@@ -46,15 +51,15 @@
 		</div>
 	</div> --}}
 
-    {{-- navbar --}}
-    @include('layouts.siswa.navbar');
+	{{-- navbar --}}
+	@include('layouts.siswa.navbar');
 
-    {{-- Sidebar-Left --}}
-    @include('layouts.siswa.sidebar-left')
+	{{-- Sidebar-Left --}}
+	@include('layouts.siswa.sidebar-left')
 
 	<div class="mobile-menu-overlay"></div>
 
-    @yield('content')
+	@yield('content')
 
 	<!-- js -->
 	<script src="{{asset('assets/vendors/scripts/core.js')}}"></script>
@@ -67,7 +72,7 @@
 	<script src="{{asset('assets/src/plugins/datatables/js/dataTables.responsive.min.js')}}"></script>
 	<script src="{{asset('assets/src/plugins/datatables/js/responsive.bootstrap4.min.js')}}"></script>
 	<script src="vendors/scripts/dashboard.js"></script>
-    <!-- buttons for Export datatable -->
+	<!-- buttons for Export datatable -->
 	<script src="{{asset('assets/src/plugins/datatables/js/dataTables.buttons.min.js')}}"></script>
 	<script src="{{asset('assets/src/plugins/datatables/js/buttons.bootstrap4.min.js')}}"></script>
 	<script src="{{asset('assets/src/plugins/datatables/js/buttons.print.min.js')}}"></script>
@@ -78,4 +83,5 @@
 	<!-- Datatable Setting js -->
 	<script src="{{asset('assets/vendors/scripts/datatable-setting.js')}}"></script>
 </body>
+
 </html>

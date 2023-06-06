@@ -42,14 +42,17 @@ Route::prefix('admin')->middleware(['auth', 'Admin'])->group(function () {
     Route::resource('pelajaran', PelajaranController::class);
     Route::resource('data_guru', DataGuruController::class);
     Route::resource('data_siswa', DataSiswaController::class);
-
 });
+
+
 Route::prefix('guru')->middleware(['auth', 'Guru'])->group(function () {
     Route::get('dashboard', function () {
             return view('guru.dashboard');
         }); 
     Route::resource('upload_tugas', UploadTugasController::class);
+    Route::get('/download/{id}', [UploadTugasController::class, 'downloadFILE'])->name('download.file');
 });
+
 
 Route::prefix('siswa')->middleware(['auth', 'Siswa'])->group(function () {
     Route::get('/dashboard', function () {
@@ -60,8 +63,8 @@ Route::prefix('siswa')->middleware(['auth', 'Siswa'])->group(function () {
         });  
     Route::get('/siswa-kelas', [SiswaKelasController::class,'index'])->name('index');
     Route::get('/siswa-forum', [forumSiswaController::class,'index'])->name('index');
-    Route::resource('tugas', TugasController::class);
-
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/{id}', [TugasController::class, 'show'])->name('tugas.show');
 });
         
         

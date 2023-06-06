@@ -1,4 +1,3 @@
-
 <div class="left-side-bar">
     <div class="brand-logo">
         <a href="index.html">
@@ -12,9 +11,9 @@
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
             <ul id="accordion-menu">
-            
+
                 <li>
-                    <a href="{{route('tugas.index')}}" class="dropdown-toggle no-arrow">
+                    <a href="{{ route('tugas.index') }}" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-calendar1"></span><span class="mtext">Tugas</span>
                     </a>
                 </li>

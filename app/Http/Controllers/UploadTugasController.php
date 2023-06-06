@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Files;
 use App\Models\Kelas;
 use App\Models\Jurusan;
 use App\Models\Angkatan;
@@ -10,6 +9,9 @@ use App\Models\UploadTugas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
 
 class UploadTugasController extends Controller
 {
@@ -117,6 +119,11 @@ class UploadTugasController extends Controller
 
         return view('upload_tugas_guru.show', compact('data'));
     }
+        
+    public function downloadFILE($id){
+        $filelink = UploadTugas::find($id);
+        return response()->download(storage_path('app/' . $filelink->dokumen_file));
+    }
 
     public function edit($id)
     {
@@ -128,8 +135,9 @@ class UploadTugasController extends Controller
         return view('upload_tugas_guru.edit', compact('data','kelass','jurusans','angkatans'));
     }
 
-    public function update(Request $request, $id)
+   public function update(Request $request, $id)
     {
+        // Validasi input data
         $validated = $request->validate([
             'tanggal_upload'  => 'required',
             'tanggal_selesai' => 'required',
@@ -139,22 +147,26 @@ class UploadTugasController extends Controller
             'angkatan_id'     => 'required',
         ]);
         
+        // Cari data upload tugas yang akan diubah
         $uploadTugas = UploadTugas::findOrFail($id);
-           
+
+        // Cek apakah ada perubahan pada input file
         if ($request->hasFile('dokumen_file')) {
             $files = $request->file('dokumen_file');
+            $data = [];
+
+            // Lakukan proses penggantian file jika ada perubahan
             foreach ($files as $file) {
                 $fileName = $file->getClientOriginalName();
-                $file->storeAs('path/to/save', $fileName);// Menggunakan file system Laravel untuk menyimpan file
+                $file->storeAs('path/to/save', $fileName); // Menggunakan file system Laravel untuk menyimpan file
                 $data[] = $fileName;
             }
+
+            // Update dokumen_file jika ada perubahan pada file
+            $uploadTugas->dokumen_file = json_encode($data);
         }
 
-        if (!empty($data)) {
-            $uploadTugas->dokumen_file = json_encode($data);
-        } else {
-            $uploadTugas->dokumen_file = $request->dokumen_file;
-        }
+        // Update data lainnya
         $uploadTugas->user_id         = Auth::user()->id;   
         $uploadTugas->angkatan_id     = $request->angkatan_id;
         $uploadTugas->kelas_id        = $request->kelas_id;
@@ -162,16 +174,25 @@ class UploadTugasController extends Controller
         $uploadTugas->tanggal_upload  = $request->tanggal_upload;
         $uploadTugas->tanggal_selesai = $request->tanggal_selesai;
         $uploadTugas->keterangan      = $request->keterangan;
+        
+        // Simpan perubahan pada data
         $uploadTugas->save();
 
-        return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil diedit!');
-                
+        // Redirect atau kembali ke halaman yang sesuai
+        return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy($id)
+
+   public function destroy($id)
     {
-        $data = UploadTugas::findOrFail($id);
-        $data->delete();
-        return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil dihapus!');
+        $uploadTugas = UploadTugas::find($id);
+        
+        if (!$uploadTugas) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+        
+        $uploadTugas->delete();
+        
+        return redirect()->route('upload_tugas.index')->with('success', 'Data berhasil dihapus.');
     }
 }
